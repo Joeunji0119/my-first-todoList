@@ -32,6 +32,7 @@ npm start
 
 - React-router-dom
 - Styled-Components
+- axios
 
 ## 폴더 구조
 
