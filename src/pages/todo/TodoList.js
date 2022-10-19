@@ -7,6 +7,7 @@ const TodoList = ({
   UpdateValue,
   TodoModify,
   TodoDelete,
+  TodoChange,
 }) => {
   return todos.map(todoItem => (
     <Todo
@@ -16,6 +17,7 @@ const TodoList = ({
       UpdateValue={UpdateValue}
       TodoModify={TodoModify}
       TodoDelete={TodoDelete}
+      TodoChange={TodoChange}
     />
   ));
 };

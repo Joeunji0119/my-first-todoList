@@ -9,6 +9,7 @@ import { API } from '../../config';
 const Todos = () => {
   const [todoInput, setTodoInput] = useState('');
   const [todos, setTodos] = useState([]);
+
   const access_token = localStorage.getItem('token');
   const config = {
     headers: { Authorization: 'Bearer ' + access_token },
@@ -58,11 +59,9 @@ const Todos = () => {
 
   const TodoModify = async (e, checkedId, setToogle) => {
     e.preventDefault();
-
     const [targetValue] = todos.filter(({ id }) => id === Number(checkedId));
-
     await axios.put(
-      `${API.Todo}${checkedId}`,
+      `${API.Todo}/${checkedId}`,
       {
         todo: targetValue.todo,
         isCompleted: targetValue.isCompleted,
@@ -77,6 +76,13 @@ const Todos = () => {
     await axios.delete(`${API.Todo}/${checkedId}`, config);
     setToogle(pre => !pre);
     alert('삭제 완료');
+    window.location.reload(true);
+  };
+
+  const TodoChange = e => {
+    e.preventDefault();
+    alert('취소되었습니다');
+    window.location.reload(true);
   };
 
   useEffect(() => {
@@ -115,6 +121,7 @@ const Todos = () => {
                   UpdateValue={UpdateValue}
                   TodoModify={TodoModify}
                   TodoDelete={TodoDelete}
+                  TodoChange={TodoChange}
                 />
               </TodoListBox>
             </TodoForm>

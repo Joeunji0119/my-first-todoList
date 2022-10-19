@@ -7,6 +7,7 @@ const Todo = ({
   UpdateValue,
   TodoModify,
   TodoDelete,
+  TodoChange,
 }) => {
   const { id, todo, isCompleted } = todoItem;
   const [toogle, setToogle] = useState(false);
@@ -37,12 +38,15 @@ const Todo = ({
     ? {
         onClick: e => {
           TodoDelete(e, id, setToogle);
+          setToogle(false);
         },
       }
     : {
-        onClick: () => {
+        onClick: e => {
           setStatusDelete('삭제');
+          setStatusModify('수정');
           setToogle(false);
+          TodoChange(e);
         },
       };
 
@@ -50,8 +54,8 @@ const Todo = ({
     <TodoLayout>
       <TodoCheck
         checked={isCompleted}
-        readOnly
         onClick={() => checkboxHandler(id)}
+        readOnly
         type="checkbox"
       />
       <TodoInput value={todo} {...inputProps} />
