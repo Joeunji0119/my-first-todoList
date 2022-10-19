@@ -17,12 +17,13 @@ npm start
 ## 데모 영상 or 배포 링크
 
 1. 로그인 / 회원가입
+<br />
 ![화면 기록 2022-10-19 오후 9 01 21](https://user-images.githubusercontent.com/95282989/196692709-37c45666-4122-4003-9203-cfb5f475613a.GIF)
-
+<br />
 
 2. 할 일 등록 / 조회 / 수정 / 삭제
-
-![화면 기록 2022-10-19 오후 9 01 21](https://user-images.githubusercontent.com/95282989/196692887-96cba6a2-c9cf-47d7-887c-d415af5e3616.GIF)
+ <br />
+![화면 기록 2022-10-19 오후 9 01 21 2](https://user-images.githubusercontent.com/95282989/196693184-f724ebf2-2750-400b-aec0-226ee1d65593.GIF)
 ![화면 기록 2022-10-19 오후 9 01 21 3](https://user-images.githubusercontent.com/95282989/196692930-40aeedf2-264c-439a-beec-10ed19267d8e.GIF)
 
 
