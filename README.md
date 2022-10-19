@@ -31,8 +31,7 @@ npm start
 ## 사용 라이브러리
 
 - React-router-dom
-- SCSS
-- React-Icons
+- Styled-Components
 
 ## 폴더 구조
 
