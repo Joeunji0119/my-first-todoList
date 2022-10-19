@@ -20,7 +20,6 @@ const theme = {
   middleFont: '25px',
   smallFont: '18px',
   smallerFont: '13px',
-  paddingSpace: '48px',
 };
 
 export default theme;
