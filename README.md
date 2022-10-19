@@ -16,7 +16,7 @@ npm start
 
 ## 데모 영상 or 배포 링크
 
-[👉 배포 링크 👈](https://kimjuno97.github.io/wanted-pre-onboarding-frontend/)
+[👉 배포 링크 👈]()
 
 ## 사용 라이브러리
 
@@ -27,27 +27,16 @@ npm start
 ## 폴더 구조
 
 ```
-📦src
- ┣ 📂api
- ┃ ┣ 📜api.js
- ┃ ┣ 📜header.js
- ┃ ┗ 📜todo.js
+📦page
  ┣ 📂Auth
  ┃ ┣ 📜Auth.js
- ┃ ┣ 📜inputBox.js
- ┃ ┗ 📜Styled.Auth.js
- ┣ 📂styles
- ┃ ┣ 📜GlobalStyle.js
- ┃ ┗ 📜them.js
- ┃ ┗ 📜variable.js
+ ┃ ┣ 📜User.js
  ┣ 📂Todo
- ┃ ┣ 📜ListDiv.js
- ┃ ┣ 📜Styled.Todo.js
  ┃ ┣ 📜Todo.js
- ┣ 📜index.js
- ┗ 📜Router.js
+ ┃ ┣ 📜TodoList.js
+ ┃ ┣ 📜Todos.js
 ```
 
 ## 에세이 
-[👉 에세이 👈](https://blog.naver.com/wnsgh818)
+[👉 에세이 👈](https://blog.naver.com/rell_cake/222904736106)
 
