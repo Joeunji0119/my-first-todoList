@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
-import TodoList from './TodoList';
+import Todo from './Todo';
 import { API } from '../../config';
 
 const Todos = () => {
@@ -115,14 +115,17 @@ const Todos = () => {
                 <TodoButton onClick={e => plusTodo(e)}>추가</TodoButton>
               </TodoInputBox>
               <TodoListBox>
-                <TodoList
-                  todos={todos}
-                  checkboxHandler={checkboxHandler}
-                  UpdateValue={UpdateValue}
-                  TodoModify={TodoModify}
-                  TodoDelete={TodoDelete}
-                  TodoChange={TodoChange}
-                />
+                {todos.map(todoItem => (
+                  <Todo
+                    key={todoItem.id}
+                    todoItem={todoItem}
+                    checkboxHandler={checkboxHandler}
+                    UpdateValue={UpdateValue}
+                    TodoModify={TodoModify}
+                    TodoDelete={TodoDelete}
+                    TodoChange={TodoChange}
+                  />
+                ))}
               </TodoListBox>
             </TodoForm>
           </TodoBox>
