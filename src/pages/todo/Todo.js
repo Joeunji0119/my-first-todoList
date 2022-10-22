@@ -23,16 +23,10 @@ const Todo = ({
     : { onClick: e => TodoModify(e, id, setToogle) };
 
   const TodoDeleteProps = !toogle
-    ? {
-        onClick: e => {
-          TodoDelete(e, id, setToogle);
-          setToogle(pre => !pre);
-        },
-      }
+    ? { onClick: e => TodoDelete(e, id, setToogle) }
     : {
         onClick: e => {
-          setToogle(pre => !pre);
-          TodoChange(e);
+          TodoChange(e, id, setToogle);
         },
       };
 
