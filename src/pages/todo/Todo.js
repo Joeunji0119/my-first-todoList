@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useRef } from 'react';
 import styled from 'styled-components';
 
 const Todo = ({
@@ -11,6 +12,7 @@ const Todo = ({
 }) => {
   const { id, todo, isCompleted } = todoItem;
   const [toogle, setToogle] = useState(false);
+  const valueRef = useRef('');
   const statusModify = toogle ? '제출' : '수정';
   const statusDelete = toogle ? '취소' : '삭제';
 
@@ -20,7 +22,7 @@ const Todo = ({
 
   const TodoModifyProps = !toogle
     ? { onClick: () => setToogle(true) }
-    : { onClick: e => TodoModify(e, id, setToogle) };
+    : { onClick: e => TodoModify(e, id, setToogle, valueRef, todo) };
 
   const TodoDeleteProps = !toogle
     ? { onClick: e => TodoDelete(e, id, setToogle) }

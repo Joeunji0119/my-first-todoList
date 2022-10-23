@@ -58,8 +58,6 @@ const Todos = () => {
     alert('삭제 완료');
   };
 
-  // TODO : 취소 버튼부터 리팩토링!
-
   const TodoChange = (e, setToogle) => {
     e.preventDefault();
     setToogle(pre => !pre);
@@ -67,7 +65,7 @@ const Todos = () => {
 
   useEffect(() => {
     TodoAxios.GET(navigate, setTodos);
-  }, [navigate]);
+  }, []);
 
   return (
     <Layout>

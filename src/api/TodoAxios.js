@@ -12,6 +12,7 @@ export const TodoAxios = {
       navigate('/');
     } else {
       try {
+        console.log('1231');
         const { data } = await axios.get(API.Todo, config);
         setTodos(data);
       } catch (err) {

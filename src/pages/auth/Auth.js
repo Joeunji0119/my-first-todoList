@@ -30,6 +30,7 @@ const Auth = ({ isSelectSignUp, contents }) => {
 
   const toAuth = async e => {
     const sign = isSelectSignUp ? API.SignUp : API.SignIn;
+
     const config = {
       email: info.userId,
       password: info.userPassword,
@@ -40,9 +41,9 @@ const Auth = ({ isSelectSignUp, contents }) => {
       const { data } = await axios.post(sign, config);
 
       if (data.access_token) {
+        localStorage.setItem('token', data.access_token);
         alert('로그인 성공');
         navigate('/todo');
-        localStorage.setItem('token', data.access_token);
       }
     } catch (err) {
       alert('로그인에 실패했습니다');
@@ -52,9 +53,8 @@ const Auth = ({ isSelectSignUp, contents }) => {
   useEffect(() => {
     if (localStorage.getItem('token')) {
       navigate('/todo');
-      alert('로그인 되었습니다');
     }
-  });
+  }, []);
 
   return (
     <Layout>
