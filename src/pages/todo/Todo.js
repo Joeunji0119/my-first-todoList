@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useRef } from 'react';
 import styled from 'styled-components';
 
 const Todo = ({
@@ -11,42 +12,23 @@ const Todo = ({
 }) => {
   const { id, todo, isCompleted } = todoItem;
   const [toogle, setToogle] = useState(false);
-  const [statusModify, setStatusModify] = useState('수정');
-  const [statusDelete, setStatusDelete] = useState('삭제');
+  const valueRef = useRef('');
+  const statusModify = toogle ? '제출' : '수정';
+  const statusDelete = toogle ? '취소' : '삭제';
 
   const inputProps = !toogle
     ? { readOnly: true }
     : { onChange: e => UpdateValue(e, id) };
 
   const TodoModifyProps = !toogle
-    ? {
-        onClick: () => {
-          setToogle(true);
-          setStatusModify('제출');
-          setStatusDelete('취소');
-        },
-      }
-    : {
-        onClick: e => {
-          TodoModify(e, id, setToogle);
-          setStatusModify('수정');
-          setStatusDelete('삭제');
-        },
-      };
+    ? { onClick: () => setToogle(true) }
+    : { onClick: e => TodoModify(e, id, setToogle, valueRef, todo) };
 
   const TodoDeleteProps = !toogle
-    ? {
-        onClick: e => {
-          TodoDelete(e, id, setToogle);
-          setToogle(false);
-        },
-      }
+    ? { onClick: e => TodoDelete(e, id, setToogle) }
     : {
         onClick: e => {
-          setStatusDelete('삭제');
-          setStatusModify('수정');
-          setToogle(false);
-          TodoChange(e);
+          TodoChange(e, id, setToogle);
         },
       };
 

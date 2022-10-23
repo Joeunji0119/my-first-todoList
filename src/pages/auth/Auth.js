@@ -16,13 +16,6 @@ const Auth = ({ isSelectSignUp, contents }) => {
     navigate('/');
   };
 
-  useEffect(() => {
-    if (localStorage.getItem('token')) {
-      navigate('/todo');
-      alert('로그인 되었습니다');
-    }
-  });
-
   const [info, setInfo] = useState({
     userId: '',
     userPassword: '',
@@ -35,38 +28,33 @@ const Auth = ({ isSelectSignUp, contents }) => {
 
   const passed = info.userId.includes('@') && info.userPassword.length >= 8;
 
-  const config = {
-    email: info.userId,
-    password: info.userPassword,
-  };
+  const toAuth = async e => {
+    const sign = isSelectSignUp ? API.SignUp : API.SignIn;
 
-  const toSignIn = async e => {
+    const config = {
+      email: info.userId,
+      password: info.userPassword,
+    };
+
     e.preventDefault();
     try {
-      const res = await axios.post(`${API.SignIn}`, config);
-      if (res.status === 200) {
+      const { data } = await axios.post(sign, config);
+
+      if (data.access_token) {
+        localStorage.setItem('token', data.access_token);
         alert('로그인 성공');
         navigate('/todo');
-        const { access_token } = res.data;
-        localStorage.setItem('token', access_token);
       }
-    } catch {
+    } catch (err) {
       alert('로그인에 실패했습니다');
     }
   };
 
-  const toSignUp = async e => {
-    e.preventDefault();
-    try {
-      const res = await axios.post(`${API.SignUp}`, config);
-      if (res.status === 201) {
-        alert('회원가입 성공');
-        navigate('/');
-      }
-    } catch {
-      alert('회원가입에 실패했습니다');
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      navigate('/todo');
     }
-  };
+  }, []);
 
   return (
     <Layout>
@@ -89,10 +77,7 @@ const Auth = ({ isSelectSignUp, contents }) => {
                 value={info.userPassword}
                 onChange={onChangeinfo}
               />
-              <LoginButton
-                disabled={!passed}
-                onClick={isSelectSignUp ? toSignUp : toSignIn}
-              >
+              <LoginButton disabled={!passed} onClick={toAuth}>
                 {buttonText}
               </LoginButton>
               <ToGoButton onClick={isSelectSignUp ? goToSignIn : goToSignUp}>

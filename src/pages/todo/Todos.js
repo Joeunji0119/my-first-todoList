@@ -1,19 +1,13 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import axios from 'axios';
 import styled from 'styled-components';
-import TodoList from './TodoList';
-import { API } from '../../config';
+import Todo from './Todo';
+import { TodoAxios } from '../../api/TodoAxios';
 
 const Todos = () => {
   const [todoInput, setTodoInput] = useState('');
   const [todos, setTodos] = useState([]);
-
-  const access_token = localStorage.getItem('token');
-  const config = {
-    headers: { Authorization: 'Bearer ' + access_token },
-  };
 
   const navigate = useNavigate();
 
@@ -21,15 +15,7 @@ const Todos = () => {
 
   const plusTodo = async e => {
     e.preventDefault();
-    const res = await axios.post(
-      `${API.Todo}`,
-      {
-        todo: todoInput,
-        isCompleted: false,
-      },
-      config
-    );
-    const { data } = res;
+    const data = await TodoAxios.ADD(todoInput);
     setTodos(pre => [...pre, data]);
     setTodoInput('');
   };
@@ -60,47 +46,25 @@ const Todos = () => {
   const TodoModify = async (e, checkedId, setToogle) => {
     e.preventDefault();
     const [targetValue] = todos.filter(({ id }) => id === Number(checkedId));
-    await axios.put(
-      `${API.Todo}/${checkedId}`,
-      {
-        todo: targetValue.todo,
-        isCompleted: targetValue.isCompleted,
-      },
-      config
-    );
+    await TodoAxios.PUT(checkedId, targetValue.todo, targetValue.isCompleted);
     setToogle(pre => !pre);
   };
 
   const TodoDelete = async (e, checkedId, setToogle) => {
     e.preventDefault();
-    await axios.delete(`${API.Todo}/${checkedId}`, config);
+    await TodoAxios.DELETE(checkedId);
+    setTodos(prev => prev.filter(({ id }) => id !== Number(checkedId)));
     setToogle(pre => !pre);
     alert('삭제 완료');
-    window.location.reload(true);
   };
 
-  const TodoChange = e => {
+  const TodoChange = (e, setToogle) => {
     e.preventDefault();
-    alert('취소되었습니다');
-    window.location.reload(true);
+    setToogle(pre => !pre);
   };
 
   useEffect(() => {
-    const getTodoList = async () => {
-      if (!access_token) {
-        alert('로그인이 필요합니다');
-        navigate('/');
-      } else {
-        try {
-          const res = await axios.get(`${API.Todo}`, config);
-          const { data } = res;
-          setTodos(data);
-        } catch (err) {
-          throw new Error(err);
-        }
-      }
-    };
-    getTodoList();
+    TodoAxios.GET(navigate, setTodos);
   }, []);
 
   return (
@@ -115,14 +79,17 @@ const Todos = () => {
                 <TodoButton onClick={e => plusTodo(e)}>추가</TodoButton>
               </TodoInputBox>
               <TodoListBox>
-                <TodoList
-                  todos={todos}
-                  checkboxHandler={checkboxHandler}
-                  UpdateValue={UpdateValue}
-                  TodoModify={TodoModify}
-                  TodoDelete={TodoDelete}
-                  TodoChange={TodoChange}
-                />
+                {todos.map(todoItem => (
+                  <Todo
+                    key={todoItem.id}
+                    todoItem={todoItem}
+                    checkboxHandler={checkboxHandler}
+                    UpdateValue={UpdateValue}
+                    TodoModify={TodoModify}
+                    TodoDelete={TodoDelete}
+                    TodoChange={TodoChange}
+                  />
+                ))}
               </TodoListBox>
             </TodoForm>
           </TodoBox>
