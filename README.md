@@ -43,7 +43,6 @@ npm start
  ┃ ┣ 📜User.js
  ┣ 📂Todo
  ┃ ┣ 📜Todo.js
- ┃ ┣ 📜TodoList.js
  ┃ ┣ 📜Todos.js
 ```
 
