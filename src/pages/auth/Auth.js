@@ -54,7 +54,7 @@ const Auth = ({ isSelectSignUp, contents }) => {
     if (localStorage.getItem('token')) {
       navigate('/todo');
     }
-  }, []);
+  }, [navigate]);
 
   return (
     <Layout>
@@ -105,20 +105,13 @@ const BackgroundColor = styled.div`
 `;
 
 const LayoutCenter = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  ${props => props.theme.variables.absoluteCenter}
 `;
 
 const LoginBox = styled.div`
   width: 500px;
   height: auto;
-  border: 1px #ababab solid;
-  border-radius: 17px;
-  &:hover {
-    box-shadow: 1px 1px 20px #ddd;
-  }
+  ${props => props.theme.variables.backGroundHover}
 `;
 
 const LoginText = styled.div`
@@ -153,7 +146,7 @@ const LoginPassword = styled.input`
 const LoginButton = styled.button`
   width: 350px;
   height: 40px;
-  background-color: #2087c9;
+  background-color: ${props => props.theme.style.mainBlue};
   color: #ffffff;
   border: none;
   border-radius: 5.5px;
@@ -169,7 +162,7 @@ const LoginButton = styled.button`
 const ToGoButton = styled.button`
   width: 350px;
   height: 40px;
-  background-color: #2087c9;
+  background-color: ${props => props.theme.style.mainBlue};
   color: #ffffff;
   border: none;
   border-radius: 5.5px;

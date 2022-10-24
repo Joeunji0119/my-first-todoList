@@ -21,6 +21,14 @@ const variables = {
     left: 50%;
     transform: translate(-50%, -50%);
   `,
+
+  backGroundHover: css`
+    border: 1px #ababab solid;
+    border-radius: 17px;
+    &:hover {
+      box-shadow: 1px 1px 20px #ddd;
+    }
+  `,
 };
 
 export default variables;

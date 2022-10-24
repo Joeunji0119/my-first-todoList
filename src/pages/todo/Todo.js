@@ -12,23 +12,33 @@ const Todo = ({
 }) => {
   const { id, todo, isCompleted } = todoItem;
   const [toogle, setToogle] = useState(false);
-  const valueRef = useRef('');
   const statusModify = toogle ? '제출' : '수정';
   const statusDelete = toogle ? '취소' : '삭제';
+  const Ref = useRef([]);
 
   const inputProps = !toogle
     ? { readOnly: true }
     : { onChange: e => UpdateValue(e, id) };
 
   const TodoModifyProps = !toogle
-    ? { onClick: () => setToogle(true) }
-    : { onClick: e => TodoModify(e, id, setToogle, valueRef, todo) };
+    ? {
+        onClick: () => {
+          setToogle(true);
+          Ref.current[0] = isCompleted;
+          Ref.current[1] = todo;
+        },
+      }
+    : {
+        onClick: e => {
+          TodoModify(e, id, setToogle, todo);
+        },
+      };
 
   const TodoDeleteProps = !toogle
     ? { onClick: e => TodoDelete(e, id, setToogle) }
     : {
         onClick: e => {
-          TodoChange(e, id, setToogle);
+          TodoChange(e, id, setToogle, Ref);
         },
       };
 
@@ -50,10 +60,9 @@ const Todo = ({
 export default Todo;
 
 const TodoLayout = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: 20px;
+  ${props => props.theme.variables.flex()};
   margin-bottom: 10px;
+  font-size: 20px;
 `;
 
 const TodoCheck = styled.input`
@@ -63,8 +72,7 @@ const TodoCheck = styled.input`
 `;
 
 const TodoInput = styled.input`
-  display: flex;
-  align-items: center;
+  ${props => props.theme.variables.flex()};
   width: 280px;
   height: 40px;
   border: none;
@@ -75,7 +83,7 @@ const TodoModifyButton = styled.button`
   width: 50px;
   height: 40px;
   margin-left: 10px;
-  background-color: #2087c9;
+  background-color: ${props => props.theme.style.mainBlue};
   color: #ffffff;
   border: none;
   border-radius: 5.5px;

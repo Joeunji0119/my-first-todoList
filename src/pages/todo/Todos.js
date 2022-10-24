@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { React, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import styled from 'styled-components';
@@ -10,6 +10,10 @@ const Todos = () => {
   const [todos, setTodos] = useState([]);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    TodoAxios.GET(navigate, setTodos);
+  }, [navigate]);
 
   const onChangeTodo = e => setTodoInput(e.target.value);
 
@@ -58,14 +62,20 @@ const Todos = () => {
     alert('삭제 완료');
   };
 
-  const TodoChange = (e, setToogle) => {
+  const TodoChange = (e, checkedId, setToogle, Ref) => {
     e.preventDefault();
+    setTodos(prev =>
+      prev.map(({ id, userId, isCompleted, todo }) => {
+        if (id === checkedId) {
+          isCompleted = Ref.current[0];
+          todo = Ref.current[1];
+          Ref.current[1] = '';
+        }
+        return { id, userId, isCompleted, todo };
+      })
+    );
     setToogle(pre => !pre);
   };
-
-  useEffect(() => {
-    TodoAxios.GET(navigate, setTodos);
-  }, []);
 
   return (
     <Layout>
@@ -113,20 +123,13 @@ const BackgroundColor = styled.div`
 `;
 
 const LayoutCenter = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  ${props => props.theme.variables.absoluteCenter}
 `;
 
 const TodoBox = styled.div`
   width: 500px;
   height: auto;
-  border: 1px #ababab solid;
-  border-radius: 17px;
-  &:hover {
-    box-shadow: 1px 1px 20px #ddd;
-  }
+  ${props => props.theme.variables.backGroundHover}
 `;
 
 const TodoText = styled.div`
@@ -137,16 +140,12 @@ const TodoText = styled.div`
 `;
 
 const TodoForm = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+  ${props => props.theme.variables.flex('column')}
   margin: 70px 30px;
 `;
 
 const TodoInputBox = styled.form`
-  display: flex;
-  justify-content: space-between;
+  ${props => props.theme.variables.flex()}
 `;
 
 const TodoInput = styled.input`
@@ -160,7 +159,7 @@ const TodoButton = styled.button`
   width: 50px;
   height: 40px;
   margin-left: 10px;
-  background-color: #2087c9;
+  background-color: ${props => props.theme.style.mainBlue};
   color: #ffffff;
   border: none;
   border-radius: 5.5px;
