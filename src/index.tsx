@@ -6,7 +6,9 @@ import theme from './styles/theme';
 import variables from './styles/variables';
 import Router from './Router';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(
+  document.getElementById('root') as HTMLElement
+);
 root.render(
   <ThemeProvider theme={{ style: theme, variables }}>
     <GlobalStyle />

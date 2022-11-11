@@ -4,4 +4,4 @@ export const API = {
   SignIn: `${BASE_URL}/auth/signin`,
   SignUp: `${BASE_URL}/auth/signup`,
   Todo: `${BASE_URL}/todos`,
-};
+} as const;

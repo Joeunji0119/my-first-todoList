@@ -1,13 +1,14 @@
-import { React, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import styled from 'styled-components';
 import Todo from './Todo';
 import { TodoAxios } from '../../api/TodoAxios';
+import { TypeTodos } from './TypeTodo';
 
 const Todos = () => {
   const [todoInput, setTodoInput] = useState('');
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState<TypeTodos>([]);
 
   const navigate = useNavigate();
 
@@ -15,16 +16,17 @@ const Todos = () => {
     TodoAxios.GET(navigate, setTodos);
   }, [navigate]);
 
-  const onChangeTodo = e => setTodoInput(e.target.value);
+  const onChangeTodo = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setTodoInput(e.target.value);
 
-  const plusTodo = async e => {
+  const plusTodo = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const data = await TodoAxios.ADD(todoInput);
     setTodos(pre => [...pre, data]);
     setTodoInput('');
   };
 
-  const checkboxHandler = checkedId => {
+  const checkboxHandler = (checkedId: number) => {
     setTodos(pre =>
       pre.map(({ id, isCompleted, todo, userId }) => {
         if (id === checkedId) {
@@ -36,7 +38,10 @@ const Todos = () => {
     );
   };
 
-  const UpdateValue = (e, checkedId) => {
+  const UpdateValue = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    checkedId: number
+  ) => {
     setTodos(pre =>
       pre.map(({ id, isCompleted, todo, userId }) => {
         if (id === checkedId) {
@@ -47,14 +52,24 @@ const Todos = () => {
     );
   };
 
-  const TodoModify = async (e, checkedId, setToogle) => {
+  const TodoModify = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+    checkedId: number,
+    setToogle: React.Dispatch<React.SetStateAction<boolean>>
+  ) => {
     e.preventDefault();
-    const [targetValue] = todos.filter(({ id }) => id === Number(checkedId));
+    const [targetValue]: TypeTodos = todos.filter(
+      ({ id }) => id === Number(checkedId)
+    );
     await TodoAxios.PUT(checkedId, targetValue.todo, targetValue.isCompleted);
     setToogle(pre => !pre);
   };
 
-  const TodoDelete = async (e, checkedId, setToogle) => {
+  const TodoDelete = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+    checkedId: number,
+    setToogle: React.Dispatch<React.SetStateAction<boolean>>
+  ) => {
     e.preventDefault();
     await TodoAxios.DELETE(checkedId);
     setTodos(prev => prev.filter(({ id }) => id !== Number(checkedId)));
@@ -62,7 +77,12 @@ const Todos = () => {
     alert('삭제 완료');
   };
 
-  const TodoChange = (e, checkedId, setToogle, Ref) => {
+  const TodoChange = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    checkedId: number,
+    setToogle: React.Dispatch<React.SetStateAction<boolean>>,
+    Ref: React.MutableRefObject<[boolean, string]>
+  ) => {
     e.preventDefault();
     setTodos(prev =>
       prev.map(({ id, userId, isCompleted, todo }) => {

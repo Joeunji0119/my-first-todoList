@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import { SIGNIN_DATA, SIGNUP_DATA } from 'constant/auth.constant';
 import Auth from './Auth';
 
 const User = () => {
@@ -16,16 +17,3 @@ const User = () => {
 };
 
 export default User;
-
-const SIGNIN_DATA = {
-  title: '로그인',
-  buttonText: '로그인하기',
-  toGobutton: '회원가입하기',
-  url: '/',
-};
-const SIGNUP_DATA = {
-  title: '회원가입',
-  buttonText: '회원가입하기',
-  toGobutton: '로그인하기',
-  url: '/signup',
-};

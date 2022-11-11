@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useRef } from 'react';
 import styled from 'styled-components';
+import { TodoProps } from './todo.types';
 
 const Todo = ({
   todoItem,
@@ -9,16 +10,19 @@ const Todo = ({
   TodoModify,
   TodoDelete,
   TodoChange,
-}) => {
+}: TodoProps) => {
   const { id, todo, isCompleted } = todoItem;
   const [toogle, setToogle] = useState(false);
   const statusModify = toogle ? '제출' : '수정';
   const statusDelete = toogle ? '취소' : '삭제';
-  const Ref = useRef([]);
+  const Ref = useRef<[boolean, string]>([false, '']);
 
   const inputProps = !toogle
     ? { readOnly: true }
-    : { onChange: e => UpdateValue(e, id) };
+    : {
+        onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+          UpdateValue(e, id),
+      };
 
   const TodoModifyProps = !toogle
     ? {
@@ -29,17 +33,19 @@ const Todo = ({
         },
       }
     : {
-        onClick: e => {
-          TodoModify(e, id, setToogle, todo);
+        onClick: (e: React.MouseEvent<HTMLButtonElement>) => {
+          TodoModify(e, id, setToogle);
         },
       };
 
   const TodoDeleteProps = !toogle
-    ? { onClick: e => TodoDelete(e, id, setToogle) }
+    ? {
+        onClick: (e: React.MouseEvent<HTMLButtonElement>) =>
+          TodoDelete(e, id, setToogle),
+      }
     : {
-        onClick: e => {
-          TodoChange(e, id, setToogle, Ref);
-        },
+        onClick: (e: React.MouseEvent<HTMLButtonElement>) =>
+          TodoChange(e, id, setToogle, Ref),
       };
 
   return (

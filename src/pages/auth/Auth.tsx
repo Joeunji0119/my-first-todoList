@@ -1,60 +1,16 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import styled from 'styled-components';
-import { API } from '../../config';
+import { TypeAuth } from '../../constant/auth.constant';
+import useAuth from './Auth.hook';
 
-const Auth = ({ isSelectSignUp, contents }) => {
+interface Props {
+  contents: TypeAuth;
+  isSelectSignUp: boolean;
+}
+
+const Auth = ({ contents, isSelectSignUp }: Props) => {
   const { title, buttonText, toGobutton } = contents;
-  const navigate = useNavigate();
-
-  const goToSignUp = e => {
-    navigate('/signup');
-  };
-  const goToSignIn = e => {
-    navigate('/');
-  };
-
-  const [info, setInfo] = useState({
-    userId: '',
-    userPassword: '',
-  });
-
-  const onChangeinfo = e => {
-    const { name, value } = e.target;
-    setInfo({ ...info, [name]: value });
-  };
-
-  const passed = info.userId.includes('@') && info.userPassword.length >= 8;
-
-  const toAuth = async e => {
-    const sign = isSelectSignUp ? API.SignUp : API.SignIn;
-
-    const config = {
-      email: info.userId,
-      password: info.userPassword,
-    };
-
-    e.preventDefault();
-    try {
-      const { data } = await axios.post(sign, config);
-
-      if (data.access_token) {
-        localStorage.setItem('token', data.access_token);
-        alert('로그인 성공');
-        navigate('/todo');
-      }
-    } catch (err) {
-      alert('로그인에 실패했습니다');
-    }
-  };
-
-  useEffect(() => {
-    if (localStorage.getItem('token')) {
-      navigate('/todo');
-    }
-  }, [navigate]);
+  const { info, passed, toAuth, onChangeinfo, signModeHandler } = useAuth();
 
   return (
     <Layout>
@@ -77,10 +33,13 @@ const Auth = ({ isSelectSignUp, contents }) => {
                 value={info.userPassword}
                 onChange={onChangeinfo}
               />
-              <LoginButton disabled={!passed} onClick={toAuth}>
+              <LoginButton
+                disabled={!passed}
+                onClick={e => toAuth(e, isSelectSignUp)}
+              >
                 {buttonText}
               </LoginButton>
-              <ToGoButton onClick={isSelectSignUp ? goToSignIn : goToSignUp}>
+              <ToGoButton onClick={e => signModeHandler(e, isSelectSignUp)}>
                 {toGobutton}
               </ToGoButton>
             </LoginForm>

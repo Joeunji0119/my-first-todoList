@@ -1,10 +1,15 @@
 import axios from 'axios';
 import { API } from '../config';
+import { NavigateFunction } from 'react-router-dom';
+import { TypeTodos } from 'pages/todo/TypeTodo';
 
 const access_token = () => localStorage.getItem('token');
 
 export const TodoAxios = {
-  GET: async (navigate, setTodos) => {
+  GET: async (
+    navigate: NavigateFunction,
+    setTodos: React.Dispatch<React.SetStateAction<TypeTodos>>
+  ) => {
     const config = {
       headers: { Authorization: 'Bearer ' + access_token() },
     };
@@ -15,11 +20,13 @@ export const TodoAxios = {
         const { data } = await axios.get(API.Todo, config);
         setTodos(data);
       } catch (err) {
-        throw new Error(err);
+        if (err instanceof Error) {
+          console.error(err);
+        }
       }
     }
   },
-  ADD: async todoInput => {
+  ADD: async (todoInput: string) => {
     const config = {
       headers: { Authorization: 'Bearer ' + access_token() },
     };
@@ -34,14 +41,14 @@ export const TodoAxios = {
     return data;
   },
 
-  PUT: async (checkedId, todo, isCompleted) => {
+  PUT: async (checkedId: number, todo: string, isCompleted: boolean) => {
     const config = {
       headers: { Authorization: 'Bearer ' + access_token() },
     };
     await axios.put(`${API.Todo}/${checkedId}`, { todo, isCompleted }, config);
   },
 
-  DELETE: async checkedId => {
+  DELETE: async (checkedId: number) => {
     const config = {
       headers: { Authorization: 'Bearer ' + access_token() },
     };
